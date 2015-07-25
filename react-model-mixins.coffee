@@ -1,18 +1,23 @@
 RMMx = {}
 
-RMMx.integerMx = {
+RMMx.changeDatatMx = {
+    changeDataText: (attr) ->
+        (e) =>
+            v = e.target.value
+            dct = {}
+            dct[attr] = v
+            @setState dct
+
     changeDataInteger: (attr) ->
         (e) =>
             v = parseInt(e.target.value) or 0
             dct = {}
             dct[attr] = v
             @setState dct
-}
 
-RMMx.floatMx = {
     changeDataFloat: (attr) ->
         (e) =>
-            v = parseFloat(e.target.value) or 0
+            v = parseFloat(e.target.value) or 0.0
             dct = {}
             dct[attr] = v
             @setState dct

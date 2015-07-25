@@ -3,19 +3,60 @@ react-model-mixins
 
 Model mixins for Meteor React.
 
-Example
--------
+API
+---
 
-(RMMx = React Model Mixins)
-(RAC = React Autocomplete)
+* changeDatatMx
+    * changeDataText
+    * changeDataInteger
+    * changeDataFloat
+* stateMx
+    * setStateByObjectOrId   
+      replace the state by the object given. If it's passed an id string, then the state is replaced with the object obtained by the findOne
+* validationMx
+    * validate
+      validate the object
+    * isValid
+      same as validate
+    * isNotValid
+    * isValidAttr   
+      checks if an attr is valid or not  
+* saveMx   
+    * save    
+      saves the state to Mongo
+      
+Examples
+--------
 
 ```coffee
-renT = ReactMeteor.createClass
-    render: ->
-        <span>author: <b>{@props.value}</b></span>
+...
+getInitialState: ->
+    x: 0
+...
+<input type='text' value=@state.x onChange=@changeDataInteger('x')  />
 
+```      
+
+given the validations in the *lib* folder:
+```coffee
+@AValidations = (self) ->
+  text1: (x) ->
+    if Meteor.isClient
+      self.isValidAutocomplete('myTag')
+    else
+      authors.findOne(value:x)
+  text2: (x) ->
+    if Meteor.isClient
+      self.isValidAutocomplete('myTag2')
+    else
+      authors.findOne(value:x)
+  x: (x) -> x >= 5
+```
+  
+client side:
+```coffee
 A = ReactMeteor.createClass
-    mixins: [RAC.autocompleteMx, RAC.stateMx, RMMx.saveMx, RMMx.validationMx, RMMx.integerMx]
+    mixins: [RAC.changeDataMx, RAC.validationMx, RAC.stateMx, RMMx.saveMx, RMMx.validationMx, RMMx.changeDatatMx]
     autocompleteIds: ['myTag', 'myTag2']
     collection: myCollection
     validations: -> AValidations(this)
@@ -37,14 +78,22 @@ A = ReactMeteor.createClass
             <button disabled=@isNotValid() onClick=@save >save</button>
             <span>{@random()}</span>
         </div>
-
-Main = ReactMeteor.createClass
-    templateName: 'main'
-    reset: ->
-        @refs.ref1.setStateByObjectOrId({})
-    render: ->
-        <div>
-            <A ref='ref1' />
-            <button onClick=@reset>reset</button>
-        </div>
 ```
+  
+server side with ```ongoworks:security```:
+```coffee
+Security.defineMethod "ifIsValid",
+  fetch: [],
+  transform: null,
+  deny: (type, arg, userId, doc, fields, modifier) ->
+    if type == 'update'
+      doc = modifier['$set']
+
+    for attr, func of arg()
+      if not func doc[attr]
+        return true
+    false
+
+myCollection.permit(['insert', 'update']).ifIsValid(AValidations).apply()  
+```  
+  
