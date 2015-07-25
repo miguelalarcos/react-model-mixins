@@ -97,3 +97,14 @@ Security.defineMethod "ifIsValid",
 myCollection.permit(['insert', 'update']).ifIsValid(AValidations).apply()  
 ```  
   
+Another example with nested model (and array support):
+
+```coffee
+getInitialState: ->
+    a:
+        b: [{x:8}, {y:9}]
+
+render: ->
+    <div>
+        <input type='text'value=@state.a.b[1].y  onChange=@changeDataText('a.b.1.y') />
+```              
