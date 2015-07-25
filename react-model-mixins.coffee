@@ -35,7 +35,7 @@ RMMx.stateMx = {
 RMMx.validationMx = {
     validate: ->
         for attr, func of @validations()
-            if not func @state[attr]
+            if not func @state[attr], @state
                 return false
         true
     isValid: ->
@@ -43,7 +43,7 @@ RMMx.validationMx = {
     isNotValid: ->
         not @validate()
     isValidAttr: (attr) ->
-        @validations()[attr](@state[attr])
+        @validations()[attr](@state[attr], @state)
 }
 
 RMMx.saveMx = {
