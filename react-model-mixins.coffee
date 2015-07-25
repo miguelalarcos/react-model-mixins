@@ -1,26 +1,37 @@
 RMMx = {}
 
+stateFromPath = (path, value) ->
+    path = path.split('.')
+    last = path[-1..][0]
+
+    dct = {}
+    dct_ = dct
+    for p in path
+        if p == last
+            dct[p] = {$set: value}
+        else
+            #p = parseInt(p) or p
+            dct[p] = {}
+        dct = dct[p]
+    return dct_
+
 RMMx.changeDatatMx = {
     changeDataText: (attr) ->
         (e) =>
-            v = e.target.value
-            dct = {}
-            dct[attr] = v
-            @setState dct
+            dct = stateFromPath(attr, e.target.value)
+            @setState(React.addons.update(@state, dct))
 
     changeDataInteger: (attr) ->
         (e) =>
             v = parseInt(e.target.value) or 0
-            dct = {}
-            dct[attr] = v
-            @setState dct
+            dct = stateFromPath(attr, v)
+            @setState(React.addons.update(@state, dct))
 
     changeDataFloat: (attr) ->
         (e) =>
             v = parseFloat(e.target.value) or 0.0
-            dct = {}
-            dct[attr] = v
-            @setState dct
+            dct = stateFromPath(attr, v)
+            @setState(React.addons.update(@state, dct))
 }
 
 RMMx.stateMx = {
