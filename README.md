@@ -90,7 +90,7 @@ Security.defineMethod "ifIsValid",
       doc = modifier['$set']
 
     for attr, func of arg()
-      if not func doc[attr]
+      if not func doc[attr], doc
         return true
     false
 
