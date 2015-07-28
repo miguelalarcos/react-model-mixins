@@ -10,9 +10,10 @@ API
     * changeDataText
     * changeDataInteger
     * changeDataFloat
+    * changeDataCheck
 * stateMx
-    * setStateByObjectOrId   
-      replace the state by the object given. If it's passed an id string, then the state is replaced with the object obtained by the findOne
+    * setStateById
+      replace the state with the object obtained with findOne
 * validationMx
     * validate
       validate the object

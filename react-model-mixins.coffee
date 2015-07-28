@@ -32,20 +32,22 @@ RMMx.changeDatatMx = {
             v = parseFloat(e.target.value) or 0.0
             dct = stateFromPath(attr, v)
             @setState(React.addons.update(@state, dct))
+
+    changeDataCheck: (attr) ->
+        (e) =>
+            v = if @state[attr] == 'checked' then '' else 'checked'
+            dct = stateFromPath(attr, v)
+            @setState(React.addons.update(@state, dct))
 }
 
 RMMx.stateMx = {
-    setStateByObjectOrId: (id) ->
-        if _.isString(id)
-            @replaceState @collection.findOne(id)
-        else
-            obj = id
-            @replaceState obj
+    setStateById: (id) ->
+        @replaceState @collection.findOne(id)
 }
 
 RMMx.validationMx = {
     validate: ->
-        for attr, func of @validations()
+        for attr, func of @validations
             if not func @state[attr], @state
                 return false
         true
