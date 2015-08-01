@@ -40,15 +40,15 @@ getInitialState: ->
 
 given the validations in the *lib* folder:
 ```coffee
-@AValidations = (self) ->
+@AValidations = 
   text1: (x) ->
     if Meteor.isClient
-      self.isValidAutocomplete('myTag')
+      RAC.getValidationAutocomplete('myTag')
     else
       authors.findOne(value:x)
   text2: (x) ->
     if Meteor.isClient
-      self.isValidAutocomplete('myTag2')
+      RAC.getValidationAutocomplete('myTag2')
     else
       authors.findOne(value:x)
   x: (x) -> x >= 5
@@ -60,7 +60,7 @@ A = ReactMeteor.createClass
     mixins: [RAC.changeDataMx, RAC.validationMx, RAC.stateMx, RMMx.saveMx, RMMx.validationMx, RMMx.changeDatatMx]
     autocompleteIds: ['myTag', 'myTag2']
     collection: myCollection
-    validations: -> AValidations(this)
+    validations: -> AValidations
     getInitialState: ->
         text1: ''
         text2: ''

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'miguelalarcos:react-model-mixins',
-  version: '0.1.3',
+  version: '0.1.4',
   // Brief, one-line summary of the package.
   summary: 'Model mixins for Meteor React.',
   // URL to the Git repository containing the source code for this package.
