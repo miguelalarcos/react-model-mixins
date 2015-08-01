@@ -65,6 +65,7 @@ RMMx.saveMx = {
             obj = _.omit(@state, '_id')
             @collection.update @state._id, $set:obj
         else
-            id = @collection.insert @state
-            @setState _id: id
+            @collection.insert @state, (err, id) =>
+                if not err
+                    @setState _id: id
 }
