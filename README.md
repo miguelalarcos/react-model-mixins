@@ -47,4 +47,29 @@ render: ->
             <button onClick=@save ...
         }
         ...        
-```              
+```       
+
+An example of setStateById:
+```
+ItemList = React.createClass
+    click: ->
+        @props.select @props.item._id
+    render: ->
+        <div>
+            <h3>{@props.item.title}</h3>
+            <span>{@props.item.text}</span><span className='edit' onClick=@click>edit</span>
+        </div>
+
+@Main = React.createClass
+    mixins: [ReactMeteorData]
+    ...
+    select: (id) ->
+        @refs.detail.setStateById(id)
+    render: ->
+        <div>
+            <ItemDetail ref='detail' />
+            {for item in @data.list
+                <ItemList key=item._id item=item select=@select />
+            }
+        </div>                 
+```       
